@@ -8,3 +8,7 @@
 - 烟机安装距离对照：[Bosch 安装说明](https://media3.bosch-home.com/Documents/9000019153_A.pdf) 给出所涉型号电灶上方最小650毫米；不同型号规则不同。本模型约720毫米仍须按最终烟机/灶具说明复核。
 
 房间净尺寸来源于用户给定图纸，不来源于以上产品网页。柜高、窗高、室内净高及右侧闭合位置的假设详见 README。
+
+本轮排水条件参考：[湖北省住建部门公开技术答疑第4.1.7条](https://zjt.hubei.gov.cn/zfxxgk/zc/qtzdgkwj/202504/P020250910520743173556.pdf)，讨论较小卫生间在蹲便器与地面完全齐平条件下不另设地漏的情况；不作为本户已满足现场条件的证明。
+
+渲染实现参考：[Three.js LightShadow](https://threejs.org/docs/pages/LightShadow.html)，使用有遮挡的光源、法线偏移和初始化后的静态阴影缓存。未增加外部贴图或运行时 CDN。

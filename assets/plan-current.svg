@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1100" height="1010" viewBox="0 0 1100 1010"><rect width="1100" height="1010" fill="#fcfcf7"/><g font-family="PingFang SC,Microsoft YaHei,Arial,sans-serif">
-<text x="60" y="48" font-size="30" font-weight="650" fill="#234c43">方案 A · 当前布局</text><text x="60" y="80" font-size="15" fill="#718173">次卧床柜换向 · 主卧双床头柜 / 门向对调 · 淋浴区新增蹲便</text><text x="1010" y="103" text-anchor="end" font-size="18" fill="#234c43">北 ↑</text>
+<text x="60" y="48" font-size="30" font-weight="650" fill="#234c43">方案 A · 当前布局</text><text x="60" y="80" font-size="15" fill="#718173">厨房窗下炒菜 · 餐区柜体到顶 / 台面统一 · 客厅齐腰窗</text><text x="1010" y="103" text-anchor="end" font-size="18" fill="#234c43">北 ↑</text>
 <rect x="155.0" y="150" width="335.0" height="323.0" rx="0" fill="#f3eddf" stroke="#c5cabc" stroke-width="1"/>
 <rect x="100" y="488.0" width="390.0" height="333.0" rx="0" fill="#f3eddf" stroke="#c5cabc" stroke-width="1"/>
 <rect x="505.0" y="150" width="450.0" height="671.0" rx="0" fill="#f8f4e9" stroke="#c5cabc" stroke-width="1"/>
@@ -61,7 +61,7 @@
 <rect x="166.0" y="656.0" width="178.0" height="35.0" rx="2" fill="#9cac8d" stroke="#9cac8d" stroke-width="0"/>
 <text x="254.99999999999997" y="715.0" text-anchor="middle" dominant-baseline="middle" font-size="15" font-weight="400" fill="#284f4a">床垫 1800×2000</text>
 <rect x="430.0" y="588.0" width="60.0" height="233.0" rx="0" fill="#dfc89e" stroke="#b49a74" stroke-width="1"/>
-<text x="460.0" y="702.0" text-anchor="middle" dominant-baseline="middle" font-size="14" font-weight="400" fill="#284f4a" transform="rotate(90 460.0 702.0)">连续衣柜 2330×600</text>
+<text x="460.0" y="702.0" text-anchor="middle" dominant-baseline="middle" font-size="14" font-weight="400" fill="#284f4a" transform="rotate(90 460.0 702.0)">移门衣柜 2330×600</text>
 <rect x="105.0" y="776.0" width="50.0" height="45.0" rx="0" fill="#dfc89e" stroke="#b49a74" stroke-width="1"/>
 <text x="130.0" y="798.5" text-anchor="middle" dominant-baseline="middle" font-size="10" font-weight="400" fill="#284f4a">床头柜</text>
 <rect x="350.0" y="781.0" width="40.0" height="40.0" rx="0" fill="#dfc89e" stroke="#b49a74" stroke-width="1"/>
@@ -75,6 +75,8 @@
 <rect x="643.0" y="150" width="70.0" height="70.0" rx="0" fill="#eef1ed" stroke="#b49a74" stroke-width="1"/>
 <ellipse cx="678.0" cy="188.0" rx="22.0" ry="22.0" fill="#d6e2df" stroke="#93a79e"/>
 <text x="678.0" y="238.0" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="400" fill="#284f4a">洗衣机</text>
+<rect x="505.0" y="150" width="208.0" height="30.0" rx="0" fill="none" stroke="#648273" stroke-width="1" stroke-dasharray="4 3"/>
+<text x="609.0" y="107.0" text-anchor="middle" dominant-baseline="middle" font-size="14" font-weight="600" fill="#284f4a">通长顶柜 · H2650</text>
 <rect x="505.0" y="295.0" width="120.0" height="70.0" rx="0" fill="#dfc89e" stroke="#b49a74" stroke-width="1"/>
 <text x="565.0" y="330.0" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="400" fill="#284f4a">餐桌1200×700</text>
 <rect x="524.0" y="357.0" width="40.0" height="40.0" rx="5" fill="#e8ebe2" stroke="#acb69d" stroke-width="1"/>
@@ -107,12 +109,13 @@
 <text x="842.0" y="106.0" text-anchor="middle" dominant-baseline="middle" font-size="16" font-weight="600" fill="#284f4a">卫生间（进深待核）</text>
 <rect x="733.0" y="287.0" width="222.00000000000003" height="60.0" rx="0" fill="#e1d6be" stroke="#b49a74" stroke-width="1"/>
 <rect x="895.0" y="347.0" width="60.0" height="96.0" rx="0" fill="#e1d6be" stroke="#b49a74" stroke-width="1"/>
-<rect x="746.0" y="294.0" width="62.0" height="43.0" rx="4" fill="#344540" stroke="#344540" stroke-width="1"/>
-<ellipse cx="763.0" cy="315.5" rx="9.4" ry="9.4" fill="#344540" stroke="#d5dfd8"/>
-<ellipse cx="793.0" cy="315.5" rx="9.4" ry="9.4" fill="#344540" stroke="#d5dfd8"/>
-<rect x="904.5" y="370.5" width="41.5" height="55.00000000000001" rx="5" fill="#c4d1cb" stroke="#8da399" stroke-width="1"/>
+<rect x="903.5" y="351.0" width="43.0" height="62.0" rx="4" fill="#344540" stroke="#344540" stroke-width="1"/>
+<ellipse cx="925.0" cy="368.0" rx="9.4" ry="9.4" fill="#344540" stroke="#d5dfd8"/>
+<ellipse cx="925.0" cy="398.0" rx="9.4" ry="9.4" fill="#344540" stroke="#d5dfd8"/>
+<rect x="754.0" y="296.0" width="64.0" height="46.0" rx="5" fill="#c4d1cb" stroke="#8da399" stroke-width="1"/>
 <rect x="835.0" y="287.0" width="120.0" height="32.0" rx="0" fill="none" stroke="#698c72" stroke-width="1" stroke-dasharray="4 3"/>
 <text x="810.0" y="406.0" text-anchor="middle" dominant-baseline="middle" font-size="19" font-weight="600" fill="#284f4a">厨房</text>
+<text x="925.0" y="428.0" text-anchor="middle" dominant-baseline="middle" font-size="10" font-weight="400" fill="#284f4a">窗下灶</text>
 <rect x="719.5" y="458.0" width="234.0" height="55.00000000000001" rx="0" fill="#dfc89e" stroke="#b49a74" stroke-width="1"/>
 <path d="M779.5 458.0 L779.5 513.0" fill="none" stroke="#b49a74" stroke-width="1"/>
 <text x="749.5" y="485.0" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="400" fill="#284f4a">茶台</text>
@@ -128,6 +131,7 @@
 <text x="818.0" y="582.0" text-anchor="middle" dominant-baseline="middle" font-size="23" font-weight="600" fill="#284f4a">客厅</text>
 <text x="605.0" y="841.0" text-anchor="middle" dominant-baseline="middle" font-size="15" font-weight="400" fill="#284f4a">入户</text>
 <path d="M615.0 720.0 L615.0 540.0" fill="none" stroke="#8cab96" stroke-width="2" stroke-dasharray="7 5"/>
+<text x="999.0" y="619.0" text-anchor="middle" dominant-baseline="middle" font-size="13" font-weight="400" fill="#284f4a" transform="rotate(90 999.0 619.0)">齐腰窗 · 窗台暂按900</text>
 <path d="M155.0 124.0 L490.0 124.0" fill="none" stroke="#367b82" stroke-width="1"/>
 <path d="M155.0 119.0 L155.0 129.0" fill="none" stroke="#367b82" stroke-width="1"/>
 <path d="M490.0 119.0 L490.0 129.0" fill="none" stroke="#367b82" stroke-width="1"/>
@@ -144,6 +148,6 @@
 <path d="M100.0 150 L110.0 150" fill="none" stroke="#367b82" stroke-width="1"/>
 <path d="M100.0 473.0 L110.0 473.0" fill="none" stroke="#367b82" stroke-width="1"/>
 <text x="88.0" y="311.5" text-anchor="middle" dominant-baseline="middle" font-size="14" font-weight="400" fill="#367b82" transform="rotate(-90 88.0 311.5)">3230</text>
-<text x="65" y="912" font-size="16" fill="#234c43">次卧：床头靠北 / 东侧衣柜 / 床柜间850　　主卧：左下高柜改床头柜 / 门向对调</text>
-<text x="65" y="944" font-size="14" fill="#8a7153">蹲便器按600×450示意；排污管、沉箱和防水条件待核。虚线柜体为上方吊柜。</text>
+<text x="65" y="912" font-size="16" fill="#234c43">双卧移门衣柜 · 餐区电器台面H900 / 餐桌H760 · 厨房吊柜下沿H1520</text>
+<text x="65" y="944" font-size="14" fill="#8a7153">蹲便与地面齐平示意，排水须深化。冰箱型号、窗扇与烟机排烟待核。虚线为上柜。</text>
 <text x="65" y="974" font-size="14" fill="#7a8274">单位：毫米。房间与家具同一比例；右侧尺寸链未闭合，墙窗及净高仍以量房为准。</text></g></svg>

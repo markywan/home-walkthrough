@@ -1,12 +1,12 @@
 import * as T from 'three';
 import { RoomEnvironment } from './vendor/RoomEnvironment.js';
-import { buildHome, rooms } from './scene.js';
+import { buildHome, rooms } from './scene.js?v=20260913-details';
 import { EffectComposer } from './vendor/postprocessing/EffectComposer.js';
 import { RenderPass } from './vendor/postprocessing/RenderPass.js';
 import { SSAOPass } from './vendor/postprocessing/SSAOPass.js';
 import { OutputPass } from './vendor/postprocessing/OutputPass.js';
 import { makeAvatar } from './avatar.js';
-import { storageInfo } from './storage.js';
+import { storageInfo } from './storage.js?v=20260913-details';
 
 const $=s=>document.querySelector(s), canvas=$('#view'), eye=1.65;
 const TOUR_SPEED=.74, TOUR_PAUSE_SCALE=.5;
@@ -20,6 +20,7 @@ const tourStops=[
  {room:'living',name:'客厅',point:[6.12,4.55],look:[7.33,1.0,6.27],hold:5},
  {...rooms.dining,room:'dining',hold:5},
  {...rooms.kitchen,room:'kitchen',hold:5},
+ {room:'kitchen',name:'厨房洗切区',point:[7.22,2.52],look:[6.86,1.05,1.56],hold:3},
  {...rooms.bath,room:'bath',hold:5},
  {room:'bath',name:'淋浴与蹲便',point:[6.72,.98],look:[8.1,.04,.55],hold:4},
  {...rooms.second,room:'second',hold:5},
@@ -163,19 +164,19 @@ $('#view-btn').addEventListener('click',()=>{
 });
 window.addEventListener('resize',resize);
 try{
- renderer=new T.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance',alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio,window.innerWidth<760?1.5:1.7));renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.08;
+ renderer=new T.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance',alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio,window.innerWidth<760?1.5:1.7));renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.03;
  renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;
  camera=new T.PerspectiveCamera(55,1,.04,85);camera.position.set(5.36,eye,5.32);camera.rotation.order='YXZ';resize();
- scene.add(new T.HemisphereLight('#f2f4ef','#a5a38d',1.3));scene.add(new T.AmbientLight('#eee8d9',.20));
- const pmrem=new T.PMREMGenerator(renderer);const env=new RoomEnvironment();scene.environment=pmrem.fromScene(env,.06).texture;scene.environmentIntensity=.28;env.dispose();pmrem.dispose();
- const sun=new T.DirectionalLight('#fff7e6',3.0);sun.position.set(15,7,6);sun.target.position.set(2,0,3);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.camera,{left:-10,right:10,top:10,bottom:-10,near:.5,far:38});sun.shadow.normalBias=.018;sun.shadow.bias=-.0002;sun.shadow.radius=3;scene.add(sun,sun.target);
- const west=new T.DirectionalLight('#edf5ef',.5);west.position.set(-6,6,3);west.target.position.set(3,0,3);scene.add(west,west.target);
+ scene.add(new T.HemisphereLight('#e4edf3','#9b8d75',.48));scene.add(new T.AmbientLight('#e5dac7',.045));
+ const pmrem=new T.PMREMGenerator(renderer);const env=new RoomEnvironment();scene.environment=pmrem.fromScene(env,.10).texture;scene.environmentIntensity=.34;env.dispose();pmrem.dispose();
+ const sun=new T.DirectionalLight('#fff0d8',2.35);sun.position.set(15,7,6);sun.target.position.set(2,0,3);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.camera,{left:-8,right:8,top:8,bottom:-8,near:.5,far:38});sun.shadow.normalBias=.010;sun.shadow.bias=-.00015;sun.shadow.radius=3;scene.add(sun,sun.target);
+ const west=new T.DirectionalLight('#dce9f2',.65);west.position.set(-6,5,3);west.target.position.set(3,0,3);west.castShadow=true;west.shadow.mapSize.set(1024,1024);Object.assign(west.shadow.camera,{left:-5,right:5,top:5,bottom:-5,near:.5,far:22});west.shadow.normalBias=.012;west.shadow.bias=-.0002;scene.add(west,west.target);
  home=buildHome(scene);makeGrid();
  const garden=await new T.TextureLoader().loadAsync('./assets/garden.jpg');home.setGarden(garden);
  try{avatar=await makeAvatar(scene);}catch(e){console.warn('人物模型暂未载入',e);$('#view-btn').disabled=true;$('#view-btn').textContent='人物暂不可用';}
  updateStorage();
  camera.rotation.set(state.pitch,state.yaw,0,'YXZ');await renderer.compileAsync(scene,camera);renderer.render(scene,camera);renderer.shadowMap.autoUpdate=false;
- const target=new T.WebGLRenderTarget(innerWidth,innerHeight,{type:T.HalfFloatType,samples:4});composer=new EffectComposer(renderer,target);composer.setPixelRatio(Math.min(devicePixelRatio,1.35));composer.addPass(new RenderPass(scene,camera));ao=new SSAOPass(scene,camera,innerWidth*.65,innerHeight*.65,12);ao.ssaoMaterial.fragmentShader=ao.ssaoMaterial.fragmentShader.replace('1.0 - occlusion','1.0 - occlusion * 0.35');ao.kernelRadius=.09;ao.minDistance=.00002;ao.maxDistance=.002;composer.addPass(ao);composer.addPass(new OutputPass());resize();
+ const target=new T.WebGLRenderTarget(innerWidth,innerHeight,{type:T.HalfFloatType,samples:4});composer=new EffectComposer(renderer,target);composer.setPixelRatio(Math.min(devicePixelRatio,1.35));composer.addPass(new RenderPass(scene,camera));ao=new SSAOPass(scene,camera,innerWidth*.65,innerHeight*.65,16);ao.ssaoMaterial.fragmentShader=ao.ssaoMaterial.fragmentShader.replace('1.0 - occlusion','1.0 - occlusion * 0.52');ao.kernelRadius=.16;ao.minDistance=.00002;ao.maxDistance=.003;composer.addPass(ao);composer.addPass(new OutputPass());resize();
  state.ready=true;frameTime=performance.now();$('#loading').classList.add('done');hintTimer=setTimeout(hideHint,12000);requestAnimationFrame(tick);
  window.__homeDebug={state,home,camera,player,avatar,renderer,composer,ao,rooms,tourStops,findPath,clearLine,setRoom,stopMotion,advanceTour,navigate,reset:()=>{stopMotion();player.set(5.36,0,5.32);state.yaw=state.targetYaw=-.81;state.pitch=state.targetPitch=-.12;}};
 }catch(error){
