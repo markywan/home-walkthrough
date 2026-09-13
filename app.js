@@ -1,12 +1,12 @@
 import * as T from 'three';
 import { RoomEnvironment } from './vendor/RoomEnvironment.js';
-import { buildHome, rooms } from './scene.js?v=20260913-details';
+import { buildHome, rooms } from './scene.js?v=20260913-tour-film';
 import { EffectComposer } from './vendor/postprocessing/EffectComposer.js';
 import { RenderPass } from './vendor/postprocessing/RenderPass.js';
 import { SSAOPass } from './vendor/postprocessing/SSAOPass.js';
 import { OutputPass } from './vendor/postprocessing/OutputPass.js';
-import { makeAvatar } from './avatar.js';
-import { storageInfo } from './storage.js?v=20260913-details';
+import { makeAvatar } from './avatar.js?v=20260913-tour-film';
+import { storageInfo } from './storage.js?v=20260913-tour-film';
 
 const $=s=>document.querySelector(s), canvas=$('#view'), eye=1.65;
 const TOUR_SPEED=.74, TOUR_PAUSE_SCALE=.5;
@@ -15,6 +15,7 @@ const state={ready:false,yaw:-.81,pitch:-.12,targetYaw:-.81,targetPitch:-.12,pat
 const player=new T.Vector3(5.36,0,5.32);
 let composer,ao,avatar,renderer,home,camera,frameTime=0,toastTimer,hintTimer,drag=null,moveKeys=new Set(),pointerButtons=new Map(),lastRoomTime=0;
 const ray=new T.Raycaster(),pointer=new T.Vector2();
+let followYaw=null,followDistance=2.1;
 const tourStops=[
  {...rooms.living,room:'living',hold:4},
  {room:'living',name:'客厅',point:[6.12,4.55],look:[7.33,1.0,6.27],hold:5},
@@ -22,7 +23,7 @@ const tourStops=[
  {...rooms.kitchen,room:'kitchen',hold:5},
  {room:'kitchen',name:'厨房洗切区',point:[7.22,2.52],look:[6.86,1.05,1.56],hold:3},
  {...rooms.bath,room:'bath',hold:5},
- {room:'bath',name:'淋浴与蹲便',point:[6.72,.98],look:[8.1,.04,.55],hold:4},
+ {room:'bath',name:'淋浴与蹲便',point:[6.72,.98],look:[8.1,.04,.26],hold:4},
  {...rooms.second,room:'second',hold:5},
  {room:'second',name:'次卧',point:[2.10,2.50],look:[3.50,1.25,1.1],hold:5},
  {...rooms.master,room:'master',hold:6},
@@ -96,8 +97,11 @@ function tryStep(dx,dz){
  let moved=false;if(home.walkable(p.x+dx,p.z)){p.x+=dx;moved=true;}if(home.walkable(p.x,p.z+dz)){p.z+=dz;moved=true;}return moved;
 }
 function tick(now){
- requestAnimationFrame(tick);if(!state.ready)return;
+ requestAnimationFrame(tick);if(!state.ready||state.manualRender)return;
  const dt=Math.min(.1,(now-frameTime)/1000||.016);frameTime=now;if(document.hidden)return;
+ renderStep(dt,now);
+}
+function renderStep(dt,now=performance.now()){
  const controls=new Set([...moveKeys,...pointerButtons.values()]);
  if(controls.size){
   if(state.mode!=='idle')stopMotion();let f=(controls.has('forward')?1:0)-(controls.has('back')?1:0),r=(controls.has('right')?1:0)-(controls.has('left')?1:0);
@@ -113,11 +117,22 @@ function tick(now){
  const moving=controls.size>0||state.path.length>0;
  if(avatar){avatar.group.position.copy(player);avatar.group.visible=state.view==='third';avatar.update(dt,moving,state.yaw);}
  if(state.view==='third'){
-  let distance=.05;for(let d=.1;d<=2.35;d+=.025){if(!home.walkable(player.x+Math.sin(state.yaw)*d,player.z+Math.cos(state.yaw)*d,.12,true))break;distance=d;}
-  camera.position.set(player.x+Math.sin(state.yaw)*distance,eye,player.z+Math.cos(state.yaw)*distance);
-  const centerY=eye-Math.tan(Math.atan2(eye,distance)/2)*distance;camera.lookAt(player.x,T.MathUtils.clamp(centerY+state.pitch*.4,.55,1.45),player.z);
-  if(avatar)avatar.group.visible=distance>1.02;
- }else{camera.position.set(player.x,eye,player.z);camera.rotation.set(state.pitch,state.yaw,0,'YXZ');}
+  // Prefer a trailing view, then ease sideways where a wall blocks the camera.
+  const clearance=a=>{let distance=.05;for(let d=.1;d<=2.1;d+=.025){if(!home.walkable(player.x+Math.sin(a)*d,player.z+Math.cos(a)*d,.12,true))break;distance=d;}return distance;};
+  if(followYaw===null)followYaw=state.yaw;
+  let best=state.yaw,score=-Infinity;
+  for(const offset of [0,.4,-.4,.8,-.8,1.2,-1.2,1.6,-1.6,2,-2,Math.PI]){
+   const a=state.yaw+offset,d=clearance(a),v=Math.min(d,1.9)-Math.abs(offset)*.18-Math.abs(angleDiff(a,followYaw))*.24;
+   if(v>score){score=v;best=a;}
+  }
+  followYaw+=T.MathUtils.clamp(angleDiff(best,followYaw),-dt*1.35,dt*1.35);
+  const available=clearance(followYaw);
+  followDistance=Math.min(available,T.MathUtils.lerp(followDistance,available,Math.min(1,dt*2.8)));
+  camera.position.set(player.x+Math.sin(followYaw)*followDistance,eye,player.z+Math.cos(followYaw)*followDistance);
+  const centerY=T.MathUtils.lerp(1.43,.98,T.MathUtils.clamp((followDistance-.35)/1.5,0,1));
+  camera.lookAt(player.x,centerY+state.pitch*.16,player.z);
+  if(avatar)avatar.group.visible=followDistance>.38;
+ }else{followYaw=null;camera.position.set(player.x,eye,player.z);camera.rotation.set(state.pitch,state.yaw,0,'YXZ');}
 
  if(now-lastRoomTime>250){lastRoomTime=now;const key=home.zone(player.x,player.z);$('#place-name').textContent=rooms[key].name;if(key!==state.lastRoom){state.lastRoom=key;updateStorage();document.querySelectorAll('[data-room]').forEach(b=>{const sel=b.dataset.room===key;b.classList.toggle('selected',sel);b.setAttribute('aria-pressed',sel);});}if(state.mode==='tour')$('#tour-progress span').style.width=(state.tourIndex/tourStops.length*100)+'%';}
  if(composer)composer.render();else renderer.render(scene,camera);state.frames++;
@@ -178,7 +193,7 @@ try{
  camera.rotation.set(state.pitch,state.yaw,0,'YXZ');await renderer.compileAsync(scene,camera);renderer.render(scene,camera);renderer.shadowMap.autoUpdate=false;
  const target=new T.WebGLRenderTarget(innerWidth,innerHeight,{type:T.HalfFloatType,samples:4});composer=new EffectComposer(renderer,target);composer.setPixelRatio(Math.min(devicePixelRatio,1.35));composer.addPass(new RenderPass(scene,camera));ao=new SSAOPass(scene,camera,innerWidth*.65,innerHeight*.65,16);ao.ssaoMaterial.fragmentShader=ao.ssaoMaterial.fragmentShader.replace('1.0 - occlusion','1.0 - occlusion * 0.52');ao.kernelRadius=.16;ao.minDistance=.00002;ao.maxDistance=.003;composer.addPass(ao);composer.addPass(new OutputPass());resize();
  state.ready=true;frameTime=performance.now();$('#loading').classList.add('done');hintTimer=setTimeout(hideHint,12000);requestAnimationFrame(tick);
- window.__homeDebug={state,home,camera,player,avatar,renderer,composer,ao,rooms,tourStops,findPath,clearLine,setRoom,stopMotion,advanceTour,navigate,reset:()=>{stopMotion();player.set(5.36,0,5.32);state.yaw=state.targetYaw=-.81;state.pitch=state.targetPitch=-.12;}};
+ window.__homeDebug={state,home,scene,camera,player,avatar,renderer,composer,ao,step:renderStep,startTour,rooms,tourStops,findPath,clearLine,setRoom,stopMotion,advanceTour,navigate,reset:()=>{stopMotion();player.set(5.36,0,5.32);state.yaw=state.targetYaw=-.81;state.pitch=state.targetPitch=-.12;}};
 }catch(error){
  console.error(error);$('#load-text').textContent='这个浏览器暂时无法显示3D，可以换系统浏览器打开，或先看平面图。';$('.load-line').style.display='none';const btn=document.createElement('button');btn.textContent='先看平面图';btn.className='tour-button';btn.addEventListener('click',()=>$('#plan-dialog').showModal());$('#loading').append(btn);
 }

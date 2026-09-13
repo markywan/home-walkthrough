@@ -4,14 +4,14 @@ import { mergeGeometries } from './vendor/BufferGeometryUtils.js';
 
 export const H = 2.65;
 export const LIVING_SILL = .9;
-export const DETAILS={fridge:{width:.62,depth:.65,height:1.83,bay:.70,upperBottom:2.10},diningCounter:{height:.90,depth:.70,thickness:.03},diningTable:{height:.76,thickness:.03},kitchen:{hob:[8.25,.90,2.32],sink:[6.86,.88,1.685],hoodBottom:1.65}};
+export const DETAILS={fridge:{width:.62,depth:.65,height:1.83,bay:.70,upperBottom:2.10},diningCounter:{height:.90,depth:.70,thickness:.03},diningTable:{height:.76,thickness:.03},kitchen:{hob:[8.25,.90,2.32],sink:[6.86,.88,1.685],hoodBottom:1.65},bath:{squat:{width:.52,depth:.42,center:[8.1,.26]},toilet:{width:.375,depth:.60,height:.76,front:.64},showerStanding:{x:7.665,z:.47,width:.885,depth:.74}}};
 export const rooms = {
  living:{name:'客厅',point:[5.36,5.32],look:[7.38,1.2,3.38]},
  master:{name:'主卧',point:[2.86,3.98],look:[1.3,.95,5.65]},
  second:{name:'次卧',point:[2.9,2.57],look:[1.45,1.0,1.0]},
  dining:{name:'餐区',point:[5.69,2.65],look:[4.82,1.05,1.16]},
  kitchen:{name:'厨房',point:[7.22,2.52],look:[8.21,1.24,2.26]},
- bath:{name:'卫生间',point:[6.72,.98],look:[8.08,1.6,.47]}
+ bath:{name:'卫生间',point:[6.72,.98],look:[8.10,1.45,.86]}
 };
 let seed=217; function rnd(){seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;}
 function canvasTexture(type){
@@ -70,7 +70,7 @@ export function buildHome(scene){
  }
  floor(.55,0,3.35,3.23);floor(0,3.38,3.9,3.33);floor(4.05,0,2.28,6.71);floor(6.33,3.08,2.22,3.63);
  // Tile and substrate leave an actual recess under the squat pan.
- floor(6.33,0,1.545,1.22,true,m.bathFloor);floor(8.325,0,.225,1.22,true,m.bathFloor);floor(7.875,0,.45,.25,true,m.bathFloor);floor(7.875,.85,.45,.37,true,m.bathFloor);
+ floor(6.33,0,1.51,1.22,true,m.bathFloor);floor(8.36,0,.19,1.22,true,m.bathFloor);floor(7.84,0,.52,.05,true,m.bathFloor);floor(7.84,.47,.52,.75,true,m.bathFloor);
  floor(6.33,1.37,2.22,1.56,true);floor(3.9,2.43,.15,.8);floor(3.9,3.48,.15,.8);floor(6.18,.55,.15,.67,true);floor(6.18,2.12,.15,.81,true);
  function wall(x,z,w,d){b(x,z,w,d,H,0,m.wall,0,true);if(w>d){b(x,z-.012,w,.024,.075,.005,m.trim);b(x,z+d-.012,w,.024,.075,.005,m.trim);}else{b(x-.012,z,.024,d,.075,.005,m.trim);b(x+w-.012,z,.024,d,.075,.005,m.trim);}}
  function windowZ(x,z,len,sill=.35,top=2.42,thick=.2){
@@ -227,45 +227,60 @@ export function buildHome(scene){
  b(6.445,.154,.61,.009,.78,1.15,mat('#bac8c5',.15,{metalness:.9}),.009);
  b(6.743,.166,.003,.003,.78,1.15,m.frame);
  wardrobe(7.14,.015,.45,.18,.65,'south',m.wood,1.70,false);
- sphere(7.36,.55,.19,.21,.3,.28,m.porcelain);b(7.18,.06,.36,.21,.7,0,m.porcelain,.05,true);sphere(7.36,.54,.197,.035,.28,.445,m.white);ob(7.16,.12,.4,.72,.75);
- const flush=cyl(7.36,.16,.032,.007,.706,m.metal);b(7.125,.34,.04,.18,.03,.63,m.metal,.008);
+ // Adult compact WC, 600 projection × 375 width × 760 overall height.
+ sphere(7.36,.38,.17,.18,.26,.225,m.porcelain);
+ b(7.23,.14,.26,.46,.19,0,m.porcelain,.045);
+ b(7.1725,.04,.375,.15,.754,0,m.porcelain,.035);
+ sphere(7.36,.40,.18,.014,.24,.416,m.white);ob(7.1725,.04,.375,.60,.76);
+ const flush=cyl(7.36,.112,.029,.006,.754,m.metal);b(7.125,.30,.04,.16,.03,.61,m.metal,.008);
  const roll=cyl(7.11,.43,.065,.10,.54,m.white);roll.rotation.x=Math.PI/2;
  tube([[6.47,.98,.485],[7.015,.98,.485]],.009);b(6.53,.475,.24,.016,.29,.68,mat('#b58069',.94,{map:clothTex}),.006);
  const showerTile=m.bathFloor;
- b(7.68,.01,.195,1.19,.018,-.014,showerTile);b(8.325,.01,.215,1.19,.018,-.014,showerTile);
- b(7.875,.01,.45,.24,.018,-.014,showerTile);b(7.875,.85,.45,.35,.018,-.014,showerTile);
- // A 600 × 450 mm squat pan: ceramic rim, recessed bowl and ridged footrests.
- const panShape=new T.Shape();panShape.moveTo(-.225,-.30);panShape.lineTo(.225,-.30);panShape.lineTo(.225,.30);panShape.lineTo(-.225,.30);panShape.closePath();
- const opening=new T.Path();opening.absellipse(0,0,.105,.225,0,Math.PI*2,true,0);panShape.holes.push(opening);
- const panRim=mesh(new T.ExtrudeGeometry(panShape,{depth:.018,bevelEnabled:false,curveSegments:40}),m.porcelain,8.1,-.014,.55);panRim.rotation.x=-Math.PI/2;
+ b(7.68,.01,.16,1.19,.018,-.014,showerTile);b(8.36,.01,.18,1.19,.018,-.014,showerTile);
+ b(7.84,.01,.52,.04,.018,-.014,showerTile);b(7.84,.47,.52,.73,.018,-.014,showerTile);
+ // A compact 520 × 420 pan, rotated across the north end, separate from the shower footing.
+ const panShape=new T.Shape();panShape.moveTo(-.26,-.21);panShape.lineTo(.26,-.21);panShape.lineTo(.26,.21);panShape.lineTo(-.26,.21);panShape.closePath();
+ const opening=new T.Path();opening.absellipse(0,0,.185,.10,0,Math.PI*2,true,0);panShape.holes.push(opening);
+ const panRim=mesh(new T.ExtrudeGeometry(panShape,{depth:.018,bevelEnabled:false,curveSegments:40}),m.porcelain,8.1,-.014,.26);panRim.rotation.x=-Math.PI/2;
  const panMat=m.porcelain.clone();panMat.side=T.DoubleSide;
- const bowl=mesh(new T.LatheGeometry([[.028,-.17],[.036,-.16],[.060,-.13],[.078,-.08],[.094,-.02],[.105,.004]].map(p=>new T.Vector2(...p)),40),panMat,8.1,0,.55);bowl.scale.z=.225/.105;
- const panDrain=mesh(new T.CircleGeometry(.038,24),m.dark,8.1,-.17,.55);panDrain.rotation.x=-Math.PI/2;panDrain.scale.y=1.8;
- for(const x of [7.89,8.225]){b(x,.33,.085,.44,.012,.004,m.porcelain,.012);for(let i=0;i<10;i++)b(x+.005,.35+i*.037,.075,.007,.002,.016,m.white,.002);}
- b(7.77,.026,.12,.03,.18,.72,m.metal,.009);b(7.80,.06,.06,.014,.055,.81,m.white,.006);
- ob(7.995,.325,.21,.45,.06);
- b(7.65,0,.015,.62,2.13,0,m.glass);ob(7.65,0,.015,.62,2.13);b(7.648,0,.018,.02,2.14,0,m.frame);b(7.65,0,.015,1.22,.018,2.12,m.frame);
- tube([[8.25,.85,.04],[8.25,2.19,.04],[8.25,2.25,.38]],.014,m.bathFittings);
- cyl(8.25,.38,.13,.025,2.2,m.bathFittings);tube([[8.02,1.1,.04],[8.02,1.77,.07]],.012,m.bathFittings);
- sphere(8.02,.072,.045,.07,.018,1.78,m.bathFittings);tube([[8.02,1.62,.045],[7.97,1.12,.04],[8.12,1.04,.04]],.009,m.bathFittings);
- b(7.94,.022,.39,.038,.065,1.1,m.bathFittings,.013);
- b(8.4,.06,.13,.29,.018,1.25,m.metal,.006);
- for(const [z,col] of [[.15,'#f4efe2'],[.27,'#72887d']]){cyl(8.455,z,.026,.14,1.268,mat(col,.6));b(8.45,z-.006,.035,.012,.014,1.41,m.dark,.002);}
+ const bowl=mesh(new T.LatheGeometry([[.025,-.17],[.032,-.16],[.057,-.13],[.073,-.08],[.09,-.02],[.10,.004]].map(p=>new T.Vector2(...p)),40),panMat,8.1,0,.26);bowl.scale.x=1.85;
+ const panDrain=mesh(new T.CircleGeometry(.033,24),m.dark,8.1,-.17,.26);panDrain.rotation.x=-Math.PI/2;panDrain.scale.x=1.8;
+ for(const z of [.077,.377]){b(7.90,z,.40,.065,.012,.004,m.porcelain,.010);for(let i=0;i<10;i++)b(7.915+i*.037,z+.005,.007,.055,.002,.016,m.white,.002);}
+ b(7.96,.022,.12,.028,.18,.72,m.metal,.009);b(7.985,.05,.06,.014,.055,.81,m.white,.006);
+ ob(7.915,.16,.37,.20,.06);
+ b(7.65,0,.015,.50,2.13,0,m.glass);ob(7.65,0,.015,.50,2.13);b(7.648,0,.018,.02,2.14,0,m.frame);b(7.65,0,.015,1.22,.018,2.12,m.frame);
+ // Shower fittings move to the opposite (south) end; no fixture occupies the standing patch.
+ tube([[8.18,.85,1.17],[8.18,2.19,1.17],[8.18,2.25,.88]],.014,m.bathFittings);
+ cyl(8.18,.88,.13,.025,2.2,m.bathFittings);tube([[7.96,1.1,1.17],[7.96,1.77,1.15]],.012,m.bathFittings);
+ sphere(7.96,1.145,.045,.07,.018,1.78,m.bathFittings);tube([[7.96,1.62,1.155],[7.91,1.12,1.17],[8.06,1.04,1.17]],.009,m.bathFittings);
+ b(7.92,1.17,.39,.038,.065,1.1,m.bathFittings,.013);
+ b(8.4,.80,.13,.29,.018,1.25,m.metal,.006);
+ for(const [z,col] of [[.88,'#f4efe2'],[1.00,'#72887d']]){cyl(8.455,z,.026,.14,1.268,mat(col,.6));b(8.45,z-.006,.035,.012,.014,1.41,m.dark,.002);}
  // Independent shower drain omitted from this visual revision; drainage design remains unverified.
  // Living room: TV, open tea area, books and simple closed storage.
- const tx=6.195,tz=3.08;ob(tx,tz,2.34,.55,H);
- wardrobe(tx,tz,.6,.55,.85,'south');wardrobe(tx+.6,tz,1.74,.55,.45,'south');
- b(tx,tz,.6,.55,.024,.85,m.counter,.008);
- b(tx,tz,2.34,.3,.55,2.1,m.wood,.006);
- for(const x of [tx,tx+.6,tx+1.92,tx+2.322])b(x,tz,.018,.3,2.16,.44,m.wood);
+ const tx=6.195,tz=3.08,tvDepth=.35;ob(tx,tz,2.34,tvDepth,H);
+ // Finished front is 350 mm throughout, including recessed-grip doors.
+ function tvBase(x,w,h){
+  b(x,tz,w,.335,h,0,m.wood,.006);contact(x,tz,w,tvDepth);
+  b(x+.025,tz+.025,w-.05,.27,.065,0,m.dark);
+  const n=Math.ceil(w/.6);for(let i=0;i<n;i++){
+   b(x+i*w/n+.003,tz+.335,w/n-.006,.015,h-.077,.07,m.wood,.004);
+   b(x+i*w/n+.025,tz+.347,w/n-.05,.002,.010,h-.019,m.dark,.002);
+  }
+  cabinetAudit.push({type:'tv-flush',x,z:tz,w,d:tvDepth,h,base:0,front:'south'});
+ }
+ tvBase(tx,.6,.826);tvBase(tx+.6,1.74,.45);
+ b(tx,tz,.6,tvDepth,.024,.826,m.counter,.008);
+ b(tx,tz,2.34,.335,.55,2.1,m.wood,.006);
+ for(const x of [tx,tx+.6,tx+1.92,tx+2.322])b(x,tz,.018,tvDepth,2.16,.44,m.wood);
  b(tx+.6,tz,1.32,.022,1.64,.45,mat('#ddd1b9'));
- for(const yy of [1.48,2.08])b(tx+.6,tz,1.32,.3,.023,yy,m.wood);
- b(tx+1.251,tz,.018,.3,.577,1.503,m.wood);
- for(const yy of [.46,.85,1.25,1.65,2.05])b(tx+1.92,tz,.42,.3,.025,yy,m.wood);
- const topCuts=[0,.6,1.26,1.92,2.34];for(let i=0;i<4;i++){b(tx+topCuts[i]+.004,tz+.305,topCuts[i+1]-topCuts[i]-.008,.025,.476,2.108,m.wood,.004);}
+ for(const yy of [1.48,2.08])b(tx+.6,tz,1.32,tvDepth,.023,yy,m.wood);
+ b(tx+1.251,tz,.018,tvDepth,.577,1.503,m.wood);
+ for(const yy of [.46,.85,1.25,1.65,2.05])b(tx+1.92,tz,.42,tvDepth,.025,yy,m.wood);
+ const topCuts=[0,.6,1.26,1.92,2.34];for(let i=0;i<4;i++){b(tx+topCuts[i]+.004,tz+.325,topCuts[i+1]-topCuts[i]-.008,.025,.476,2.108,m.wood,.004);}
  const tv=b(tx+.685,tz+.275,1.15,.052,.657,.67,m.dark,.025);b(tx+.705,tz+.331,1.11,.006,.616,.691,m.screen,.009);
- cyl(tx+.17,tz+.325,.11,.23,.876,m.white);cyl(tx+.17,tz+.325,.108,.035,1.105,m.metal);
- sphere(tx+.442,tz+.34,.074,.103,.082,.985,m.metal);tube([[tx+.487,1.02,tz+.34],[tx+.538,1.1,tz+.34]],.012);cyl(tx+.442,tz+.34,.035,.017,1.082,m.dark);
+ cyl(tx+.17,tz+.19,.11,.23,.852,m.white);cyl(tx+.17,tz+.19,.108,.035,1.081,m.metal);
+ sphere(tx+.442,tz+.20,.074,.103,.082,.961,m.metal);tube([[tx+.487,.996,tz+.20],[tx+.538,1.076,tz+.20]],.012);cyl(tx+.442,tz+.20,.035,.017,1.058,m.dark);
  const bookMats=['#b4baa1','#a8865b','#d8cfb9','#6b8079','#e0d6c1','#a6b5ae'].map(c=>mat(c));
  function books(x,z,w,y){let p=x;while(p<x+w-.04){const bw=.024+rnd()*.029,bh=.17+rnd()*.105;const ma=bookMats[Math.floor(rnd()*bookMats.length)];const book=b(p,z,bw,.16,bh,y,ma,.0015);if(rnd()<.12)book.rotation.z=.09;b(p+.003,z+.161,bw-.006,.002,.005,y+bh*.77,m.white);p+=bw+.004;}}
  books(tx+.635,tz+.07,.60,1.51);books(tx+1.288,tz+.07,.60,1.51);for(const yy of [.88,1.28,1.68])books(tx+1.954,tz+.07,.35,yy);

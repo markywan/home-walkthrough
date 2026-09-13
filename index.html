@@ -6,7 +6,7 @@
   <meta name="description" content="我们家的简装方案。用手机转头看看，或沿着动线慢慢逛一圈。">
   <title>回家看看 · 方案A</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23234b41'/%3E%3Cpath d='M12 30 32 13 52 30M18 26v26h28V26M28 52V36h9v16' fill='none' stroke='%23fff5e7' stroke-width='4' stroke-linejoin='round'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./style.css?v=20260913-tour-film">
   <script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
 </head>
 <body>
@@ -22,7 +22,7 @@
     </nav>
     <div class="place-pill" id="place"><span class="place-dot"></span><span id="place-name">客厅</span><span class="separator"></span><span id="eye-label">眼高 1.65米</span></div>
     <div class="hint" id="hint"><svg viewBox="0 0 24 24"><path d="m8 13 1-9c0-2 3-2 3 0v8l2-3 2 1 2 1 2 2-1 5-4 3H9l-5-7c-1-2 1-3 2-2Z"/></svg><span>拖动画面看四周<br><small>按住箭头走动，也可以自动看房</small></span></div>
-    <div class="view-controls"><button id="view-btn" aria-pressed="false">第三人称</button><span class="rotate-tip">手机横过来看，更开阔</span></div>
+    <div class="view-controls"><button id="view-btn" aria-pressed="false">第三人称</button><a class="video-link" href="./watch.html">看视频</a><span class="rotate-tip">手机横过来看，更开阔</span></div>
     <div class="dpad" role="group" aria-label="手动走动">
       <button class="up" data-move="forward" aria-label="向前走"><svg viewBox="0 0 24 24"><path d="m6 14 6-6 6 6"/></svg></button>
       <button class="left" data-move="left" aria-label="向左走"><svg viewBox="0 0 24 24"><path d="m14 6-6 6 6 6"/></svg></button>
@@ -36,9 +36,9 @@
     <button id="fullscreen-btn" class="fullscreen-button" aria-label="全屏看房"><svg viewBox="0 0 24 24"><path d="M9 3H3v6m12-6h6v6M3 15v6h6m12-6v6h-6"/></svg></button>
     <div class="model-note">布局效果示意 · 部分尺寸待量房</div>
   </main>
-  <dialog id="plan-dialog" class="plan-dialog"><div class="dialog-heading"><div><h2>我们家的平面图</h2><p>已同步窗下炒菜、齐腰窗与餐区齐顶柜</p></div><button data-close aria-label="关闭平面图">×</button></div><div class="plan-image"><img src="./assets/plan-current.svg?v=20260913-details" alt="当前平面图，厨房东窗下炒菜、北墙水槽，餐柜到顶，客厅齐腰窗，双卧移门衣柜"></div><p class="dialog-foot">3D用来感受空间；柜体下单以前，请以量房和深化图纸为准。</p></dialog>
+  <dialog id="plan-dialog" class="plan-dialog"><div class="dialog-heading"><div><h2>我们家的平面图</h2><p>已同步窗下炒菜、齐腰窗与餐区齐顶柜</p></div><button data-close aria-label="关闭平面图">×</button></div><div class="plan-image"><img src="./assets/plan-current.svg?v=20260913-tour-film" alt="当前平面图，厨房东窗下炒菜、北墙水槽，餐柜到顶，客厅齐腰窗，双卧移门衣柜"></div><p class="dialog-foot">3D用来感受空间；柜体下单以前，请以量房和深化图纸为准。</p></dialog>
   <dialog id="storage-dialog"><div class="dialog-heading"><h2 id="storage-title">尺寸与收纳</h2><button data-close aria-label="关闭收纳说明">×</button></div><div class="help-body"><p class="storage-intro">柜体高度是本次优化的方案值，单位：毫米。</p><ul id="storage-items"></ul><p id="storage-note"></p><p class="keyboard-note">所有家具和人物共用同一米制比例；现场净高、梁柱、管线和安装条件尚待量房。</p></div></dialog>
-  <dialog id="help-dialog"><div class="dialog-heading"><h2>慢慢看，就像在家里</h2><button data-close aria-label="关闭说明">×</button></div><div class="help-body"><div class="help-step"><b>看四周</b><p>在画面上左右、上下拖动，像转头一样看。</p></div><div class="help-step"><b>走一走</b><p>按住左下角箭头走动。点房间名字，会沿通道带你过去；也可以点击地面。</p></div><div class="help-step"><b>自动看房</b><p>点“自动看房”，会用约一分钟走过客厅、餐区、厨卫和两个卧室。随时拖动画面或点暂停，就能停下来细看。</p></div><div class="help-step"><b>人物与视角</b><p>第一人称镜头离地1.65米。第三人称人物从脚底到头顶高1.65米，跟随镜头仍离地1.65米；这两个数独立设定。横屏视野更开阔，采用普通透视投影；横屏垂直视角55度，竖屏64度，画面宽度随屏幕比例改变。行走按约440毫米宽的身体碰撞范围处理。靠墙时镜头会收近，距离过近时人物暂隐。</p></div><details><summary>这次渲染采用的尺寸</summary><p>主卧3.90×3.33米，次卧3.35×3.23米；两张床垫1.80×2.00米。冰箱按约0.62×0.65×1.83米，洗衣机按0.60×0.60×0.85米示意。</p><p>主卧东柜2.33×0.60米；右床头柜0.40×0.40米，左床头柜0.50×0.45米。主卧门改为北侧铰链、向内开启。次卧衣柜沿东墙，床头靠北，床柜间净距0.85米。</p><p>室内净高暂按2.65米，门高2.10米；窗台与柜高为方案值。原图右侧尺寸链尚未闭合，本次结合历次确认的布局调整建模，不能把渲染当成实测结论。</p><p>客厅窗台暂按0.90米。餐区电器台面高0.90米，餐桌高0.76米，材质与30毫米边缘统一。冰箱型号未定，顶柜下方预留0.27米通风区。厨房改为东窗下电磁灶、北墙水槽；烟机与窗户安装条件待核。</p><p>家具按尺寸定制建模，窗外绿树为生成的环境示意，实际品牌、窗外景观及施工条件另行确认。</p></details><p class="keyboard-note">电脑也可以用 W / A / S / D 或方向键走动。</p></div></dialog>
-  <script type="module" src="./app.js?v=20260913-details"></script>
+  <dialog id="help-dialog"><div class="dialog-heading"><h2>慢慢看，就像在家里</h2><button data-close aria-label="关闭说明">×</button></div><div class="help-body"><div class="help-step"><b>看四周</b><p>在画面上左右、上下拖动，像转头一样看。</p></div><div class="help-step"><b>走一走</b><p>按住左下角箭头走动。点房间名字，会沿通道带你过去；也可以点击地面。</p></div><div class="help-step"><b>自动看房</b><p>点“自动看房”，会用约一分钟走过客厅、餐区、厨卫和两个卧室。随时拖动画面或点暂停，就能停下来细看。</p></div><div class="help-step"><b>人物与视角</b><p>第一人称镜头离地1.65米。第三人称采用亚洲成年人物，穿日常便装，从脚底到头顶高1.65米，跟随镜头仍离地1.65米；这两个数独立设定。横屏视野更开阔，采用普通透视投影；横屏垂直视角55度，竖屏64度，画面宽度随屏幕比例改变。行走按约440毫米宽的身体碰撞范围处理。靠墙时镜头会收近，会缓缓转到侧面或收近，距离过近时人物暂隐。</p></div><details><summary>这次渲染采用的尺寸</summary><p>主卧3.90×3.33米，次卧3.35×3.23米；两张床垫1.80×2.00米。冰箱按约0.62×0.65×1.83米，洗衣机按0.60×0.60×0.85米示意。</p><p>主卧东柜2.33×0.60米；右床头柜0.40×0.40米，左床头柜0.50×0.45米。主卧门改为北侧铰链、向内开启。次卧衣柜沿东墙，床头靠北，床柜间净距0.85米。</p><p>室内净高暂按2.65米，门高2.10米；窗台与柜高为方案值。原图右侧尺寸链尚未闭合，本次结合历次确认的布局调整建模，不能把渲染当成实测结论。</p><p>客厅窗台暂按0.90米。餐区电器台面高0.90米，餐桌高0.76米，材质与30毫米边缘统一。冰箱型号未定，顶柜下方预留0.27米通风区。厨房改为东窗下电磁灶、北墙水槽；烟机与窗户安装条件待核。卫生间用520×420小蹲便横放北端，花洒在南端；淋浴站位约880×740，紧凑成人马桶长600、宽375，坐面约430。</p><p>家具按尺寸定制建模，窗外绿树为生成的环境示意，实际品牌、窗外景观及施工条件另行确认。</p></details><p class="keyboard-note">电脑也可以用 W / A / S / D 或方向键走动。</p></div></dialog>
+  <script type="module" src="./app.js?v=20260913-tour-film"></script>
 </body>
 </html>
