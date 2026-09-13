@@ -6,7 +6,7 @@ export const H = 2.65;
 export const rooms = {
  living:{name:'客厅',point:[5.36,5.32],look:[7.38,1.2,3.38]},
  master:{name:'主卧',point:[2.86,3.98],look:[1.3,.95,5.65]},
- second:{name:'次卧',point:[2.3,2.27],look:[2.7,1.0,.96]},
+ second:{name:'次卧',point:[2.9,2.57],look:[1.45,1.0,1.0]},
  dining:{name:'餐区',point:[5.69,2.65],look:[4.82,1.05,1.16]},
  kitchen:{name:'厨房',point:[7.22,2.52],look:[8.1,1.43,1.68]},
  bath:{name:'卫生间',point:[6.72,.98],look:[8.08,1.6,.47]}
@@ -60,7 +60,10 @@ export function buildHome(scene){
   const tex=(tiled?tileTex:floorTex).clone();tex.repeat.set(w/(tiled?.6:1.1),d/(tiled?.6:2.2));tex.needsUpdate=true;
   const f=b(x,z,w,d,.08,-.08+(tiled?.004:0),mat('#ffffff',.85,{map:tex}),0,false);floors.push(f);f.castShadow=false;
  }
- floor(.55,0,3.35,3.23);floor(0,3.38,3.9,3.33);floor(4.05,0,4.5,6.71);floor(6.33,0,2.22,1.22,true);floor(6.33,1.37,2.22,1.56,true);floor(3.9,2.43,.15,.8);floor(3.9,3.48,.15,.8);floor(6.18,.55,.15,.67,true);floor(6.18,2.12,.15,.81,true);
+ floor(.55,0,3.35,3.23);floor(0,3.38,3.9,3.33);floor(4.05,0,2.28,6.71);floor(6.33,3.08,2.22,3.63);
+ // Tile and substrate leave an actual recess under the squat pan.
+ floor(6.33,0,1.545,1.22,true);floor(8.325,0,.225,1.22,true);floor(7.875,0,.45,.25,true);floor(7.875,.85,.45,.37,true);
+ floor(6.33,1.37,2.22,1.56,true);floor(3.9,2.43,.15,.8);floor(3.9,3.48,.15,.8);floor(6.18,.55,.15,.67,true);floor(6.18,2.12,.15,.81,true);
  function wall(x,z,w,d){b(x,z,w,d,H,0,m.wall,0,true);if(w>d){b(x,z-.012,w,.024,.075,.005,m.trim);b(x,z+d-.012,w,.024,.075,.005,m.trim);}else{b(x-.012,z,.024,d,.075,.005,m.trim);b(x+w-.012,z,.024,d,.075,.005,m.trim);}}
  function windowZ(x,z,len,sill=.35,top=2.42,thick=.2){
   b(x,z,thick,len,sill,0,m.wall);b(x,z,thick,len,H-top,top,m.wall);ob(x,z,thick,len);
@@ -84,8 +87,9 @@ export function buildHome(scene){
  for(const z of [2.43,3.48]){
   b(3.9,z,.15,.8,H-2.1,2.1,m.wall);
   b(3.87,z-.025,.21,.035,2.13,0,m.white);b(3.87,z+.79,.21,.035,2.13,0,m.white);b(3.87,z-.025,.21,.85,.04,2.1,m.white);
-  b(3.10,z+.775,.8,.035,2.06,.01,mat('#d6c6a7'),.008);ob(3.10,z+.775,.8,.035);
-  b(3.17,z+.75,.115,.02,.014,.96,m.metal);
+  const masterDoor=z>3,leafZ=masterDoor?z+.005:z+.775;
+  b(3.10,leafZ,.8,.035,2.06,.01,mat('#d6c6a7'),.008);ob(3.10,leafZ,.8,.035);
+  b(3.17,leafZ+(masterDoor?.04:-.025),.115,.02,.014,.96,m.metal);
  }
  wall(6.18,0,.15,.55);wall(6.18,1.22,.15,.9);
  b(6.18,.55,.15,.67,H-2.1,2.1,m.wall);b(6.18,2.12,.15,.81,H-2.1,2.1,m.wall);
@@ -114,21 +118,24 @@ export function buildHome(scene){
    const p=mesh(g,m.bedding,x+.335,.615,.75);p.rotation.z=x<0?.035:-.028;
   }
   const group=new T.Group();for(const a of root.children.slice(start))group.add(a);root.add(group);group.position.set(cx,0,cz);group.rotation.y=angle;
-  const horizontal=Math.abs(angle)>1;ob(cx-(horizontal?1.05:.95),cz-(horizontal?.95:1.05),horizontal?2.1:1.9,horizontal?1.9:2.1,.99);contact(cx-(horizontal?1.05:.95),cz-(horizontal?.95:1.05),horizontal?2.1:1.9,horizontal?1.9:2.1);
+  const horizontal=Math.abs(Math.sin(angle))>.5;ob(cx-(horizontal?1.05:.95),cz-(horizontal?.95:1.05),horizontal?2.1:1.9,horizontal?1.9:2.1,.99);contact(cx-(horizontal?1.05:.95),cz-(horizontal?.95:1.05),horizontal?2.1:1.9,horizontal?1.9:2.1);
  }
- bed(1.55,5.66,0);bed(2.85,.95,Math.PI/2);
- wardrobe(3.3,4.38,.6,2.33,2.6,'west');wardrobe(0,6.11,.6,.6,2.6,'north');
+ bed(1.55,5.66,0);bed(1.5,1.05,Math.PI);
+ wardrobe(3.3,4.38,.6,2.33,2.6,'west');bedside(.05,6.26,.5,.45);
  bedside(2.5,6.31);
- wardrobe(.55,0,1.1,.6,2.6,'south');wardrobe(.55,2.63,2.2,.6,2.6,'north');
- b(.55,1.28,.55,1.2,.043,.73,m.wood,.012,true);for(const z of [1.32,2.39])b(.59,z,.045,.045,.73,0,m.wood);
- b(.57,2.06,.5,.39,.53,.16,m.white,.015);
+ wardrobe(3.3,0,.6,2.2,2.6,'west');
+ // Sliding leaves avoid consuming the 850 mm bed-to-wardrobe aisle.
+ for(const x of [3.285,3.295]){b(x,.04,.008,2.12,.01,.065,m.metal);b(x,.04,.008,2.12,.01,2.565,m.metal);}
+ wardrobe(.55,2.93,1.1,.3,.95,'north',m.white,1.70,false);
+ b(.55,2.68,1.2,.55,.043,.73,m.wood,.012,true);for(const x of [.59,1.66])for(const z of [2.72,3.15])b(x,z,.045,.045,.73,0,m.wood);
+ b(.57,2.72,.39,.5,.53,.16,m.white,.015);
  function chair(x,z,angle=0,withBack=false){
   const from=root.children.length;
   b(-.2,-.2,.4,.4,.08,.42,m.sofa,.045);for(const ax of [-.145,.145])for(const az of [-.145,.145])b(ax-.017,az-.017,.034,.034,.42,0,m.wood,.008);
   if(withBack)b(-.2,.155,.4,.045,.35,.49,m.wood,.025);
   const g=new T.Group();for(const a of root.children.slice(from))g.add(a);g.position.set(x,0,z);g.rotation.y=angle;root.add(g);ob(x-.2,z-.2,.4,.4,.9);
  }
- chair(1.36,1.8,-Math.PI/2,true);
+ chair(1.34,2.50,Math.PI,true);
  // Fridge and washer fit within their 700 mm equipment bays.
  b(4.09,.035,.62,.65,1.83,0,m.white,.035,true);
  b(4.105,.679,.59,.024,1.1,.72,m.white,.019);b(4.105,.679,.59,.024,.66,.035,m.white,.019);
@@ -178,7 +185,19 @@ export function buildHome(scene){
  const flush=cyl(7.36,.16,.032,.007,.706,m.metal);b(7.125,.34,.04,.18,.03,.63,m.metal,.008);
  const roll=cyl(7.11,.43,.065,.10,.54,m.white);roll.rotation.x=Math.PI/2;
  tube([[6.47,.98,.485],[7.015,.98,.485]],.009);b(6.53,.475,.24,.016,.29,.68,m.sage,.006);
- b(7.68,.01,.86,1.19,.018,.008,mat('#d4dad3'),.009);
+ const showerTile=mat('#d4dad3');
+ b(7.68,.01,.195,1.19,.018,.008,showerTile);b(8.325,.01,.215,1.19,.018,.008,showerTile);
+ b(7.875,.01,.45,.24,.018,.008,showerTile);b(7.875,.85,.45,.35,.018,.008,showerTile);
+ // A 600 × 450 mm squat pan: ceramic rim, recessed bowl and ridged footrests.
+ const panShape=new T.Shape();panShape.moveTo(-.225,-.30);panShape.lineTo(.225,-.30);panShape.lineTo(.225,.30);panShape.lineTo(-.225,.30);panShape.closePath();
+ const opening=new T.Path();opening.absellipse(0,0,.105,.225,0,Math.PI*2,true,0);panShape.holes.push(opening);
+ const panRim=mesh(new T.ExtrudeGeometry(panShape,{depth:.018,bevelEnabled:false,curveSegments:40}),m.porcelain,8.1,.028,.55);panRim.rotation.x=-Math.PI/2;
+ const panMat=m.porcelain.clone();panMat.side=T.DoubleSide;
+ const bowl=mesh(new T.LatheGeometry([[.028,-.17],[.036,-.16],[.060,-.13],[.078,-.08],[.094,-.01],[.105,.046]].map(p=>new T.Vector2(...p)),40),panMat,8.1,0,.55);bowl.scale.z=.225/.105;
+ const panDrain=mesh(new T.CircleGeometry(.038,24),m.dark,8.1,-.17,.55);panDrain.rotation.x=-Math.PI/2;panDrain.scale.y=1.8;
+ for(const x of [7.89,8.225]){b(x,.33,.085,.44,.012,.046,m.porcelain,.012);for(let i=0;i<10;i++)b(x+.005,.35+i*.037,.075,.007,.002,.058,m.white,.002);}
+ b(7.77,.026,.12,.03,.18,.72,m.metal,.009);b(7.80,.06,.06,.014,.055,.81,m.white,.006);
+ ob(7.995,.325,.21,.45,.06);
  b(7.65,0,.015,.62,2.13,0,m.glass);ob(7.65,0,.015,.62,2.13);b(7.648,0,.018,.02,2.14,0,m.frame);b(7.65,0,.015,1.22,.018,2.12,m.frame);
  b(8.17,.024,.42,.022,.006,.04,m.metal);
  tube([[8.25,.85,.04],[8.25,2.19,.04],[8.25,2.25,.38]],.014);
@@ -220,7 +239,7 @@ export function buildHome(scene){
   cyl(x,z,s*.3,s*.55,y,m.pot,s*.38);const centerY=y+s*.8;
   for(let i=0;i<8;i++){const a=i*Math.PI*.25;const leaf=sphere(x+Math.cos(a)*s*.36,z+Math.sin(a)*s*.36,s*.105,s*.43,s*.045,centerY+s*.18,m.green);leaf.rotation.z=Math.cos(a)*.42;leaf.rotation.x=Math.sin(a)*.42;}
  }
- plant(.73,1.54,.773,.23);plant(5.76,6.28,.49,.25);plant(8.4,4.9,0,.68);
+ plant(.72,3.05,.773,.23);plant(5.76,6.28,.49,.25);plant(8.4,4.9,0,.68);
  // Ordinary outlets, switches and a few folded towels lend scale without luxury fixtures.
  for(const [x,z,y] of [[6.5,3.072,1.04],[7.72,1.397,1.13],[3.87,3.59,1.16]]){b(x,z,.08,.013,.08,y,m.white,.005);}
  b(6.48,.09,.19,.12,.03,.795,m.sage,.014);

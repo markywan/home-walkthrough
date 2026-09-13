@@ -15,3 +15,13 @@
 - The tour now moves at 0.74 m/s; each stop lasts half as long.
 - Full browser run: 61.736 seconds, all 6 areas visited, 0 invalid collision samples, no page errors.
 - Published assets are self-contained and use relative paths for GitHub Pages subdirectories.
+
+## 当前布局修订验证
+
+- 新增淋浴区蹲便器、次卧床柜换向、主卧左下床头柜及主卧房门换向；原始记录中的旧摆放仅作为历史保留。
+- 当前12段自动导览路径均可规划。完整浏览器漫游63.248秒，访问6个区域，632次采样中碰撞无效位置为0，页面错误为0。
+- 次卧门开启范围距东墙衣柜端部230毫米；主卧门开启范围距东墙衣柜端部100毫米；两者均为模型几何核对。
+- 次卧床柜之间净距850毫米，入口主活动区约1450×1130毫米。书桌前580毫米为紧凑坐席，主要进出由东侧通道承担。
+- 次卧入口、床柜通道及主卧门口均可站立；旧门扇碰撞和左下高柜已移除；蹲便器开口限制踩入，实际下凹盆体可见。
+- 页面平面图同步本轮调整；桌面与390/320像素宽手机视口通过，触控按钮不小于44像素，拖动可暂停自动看房。
+- 蹲便器为600×450毫米方案占位，不是确定的产品型号；下凹空间、排污和防水须现场确认。
